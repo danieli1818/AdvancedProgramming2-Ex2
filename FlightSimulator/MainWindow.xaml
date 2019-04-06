@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:FlightSimulator"
         xmlns:views="clr-namespace:FlightSimulator.Views"
         mc:Ignorable="d"
+        Closing="DataWindow_Closing"
         Title="MainWindow" Height="527.238" Width="878.918">
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid>
@@ -28,8 +29,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button HorizontalAlignment="Right" Margin="4">Connect</Button>
-                <Button Grid.Column="1" HorizontalAlignment="Left" Margin="4">Settings</Button>
+                <Button HorizontalAlignment="Right" Margin="4" Click="Connect_Button_Click">Connect</Button>
+                <Button Grid.Column="1" HorizontalAlignment="Left" Margin="4" Click="Settings_Button_Click">Settings</Button>
                 <views:FlightBoard Grid.Row="1" Grid.ColumnSpan="2"></views:FlightBoard>
             </Grid>
             <TabControl Grid.Row="1" Grid.Column="1">
@@ -67,15 +68,9 @@
                         <Label Grid.Row="4" Grid.ColumnSpan="5" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">
                             🠐 rudder 🠒
                         </Label>
-                        <Slider Grid.Row="2" Grid.Column="1" Name="ThrottleSlider" Orientation="Vertical" Minimum="0" Maximum="1" TickFrequency="0.05" TickPlacement="TopLeft">
-                            <Slider.LayoutTransform>
-                                <RotateTransform Angle="180"/>
-                            </Slider.LayoutTransform>
+                        <Slider Grid.Row="2" Grid.Column="1" Name="ThrottleSlider" Orientation="Vertical" Minimum="-1" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight">
                         </Slider>
-                        <Slider Grid.Row="3" Grid.Column="2" Name="RudderSlider" Minimum="0" Maximum="1" TickFrequency="0.05" TickPlacement="TopLeft">
-                            <Slider.LayoutTransform>
-                                <RotateTransform Angle="180"/>
-                            </Slider.LayoutTransform>
+                        <Slider Grid.Row="3" Grid.Column="2" Name="RudderSlider" Minimum="-1" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight">
                         </Slider>
                         <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Content="{Binding ElementName=ThrottleSlider, Path=Value}">
 
