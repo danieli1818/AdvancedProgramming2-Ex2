@@ -29,17 +29,5 @@ namespace FlightSimulator
             ViewModel = new SettingsWindowViewModel(ApplicationSettingsModel.Instance);
             this.DataContext = ViewModel;
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            ViewModel.ClickCommand.Execute(btn.CommandParameter);
-        }
-
-        private void Cancel_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            ViewModel.CancelCommand.Execute(btn.CommandParameter);
-        }
     }
 }
