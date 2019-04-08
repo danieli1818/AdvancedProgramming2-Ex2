@@ -27,6 +27,7 @@ namespace FlightSimulator
         {
             InitializeComponent();
             ViewModel = new SettingsWindowViewModel(ApplicationSettingsModel.Instance);
+            this.DataContext = ViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

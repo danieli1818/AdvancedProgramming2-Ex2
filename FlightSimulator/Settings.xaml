@@ -35,8 +35,8 @@
             <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextStyle}" Text="{Binding Path=ViewModel.FlightInfoPort , RelativeSource={RelativeSource Mode=FindAncestor , AncestorType=Window}}"></TextBox>
             <Label Grid.Row="2" Style="{StaticResource TextStyle}">Flight Command Port:</Label>
             <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource TextStyle}" Text="{Binding Path=ViewModel.FlightCommandPort , RelativeSource={RelativeSource Mode=FindAncestor , AncestorType=Window}, Mode=TwoWay}"></TextBox>
-            <Button Grid.Row="3" HorizontalAlignment="Right" Margin="4" Style="{StaticResource TextStyle}" Click="Button_Click">OK</Button>
-            <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource TextStyle}" Click="Cancel_Button_Click">Cancel</Button>
+            <Button Grid.Row="3" HorizontalAlignment="Right" Margin="4" Style="{StaticResource TextStyle}" Command="{Binding ClickCommand}">OK</Button>
+            <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource TextStyle}" Command="{Binding CancelCommand}">Cancel</Button>
         </Grid>
     </ScrollViewer>
 </Window>
