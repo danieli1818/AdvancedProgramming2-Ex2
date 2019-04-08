@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlightSimulator.Model;
+using FlightSimulator.ViewModels.Windows;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -27,11 +29,16 @@ namespace FlightSimulator
         private Thread InfoServer;
         private bool shouldInfoServerRun;
         private TcpListener InfoServerTCPListener;
+
+        public MainWindowViewModel ViewModel { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
             InfoServer = null;
             shouldInfoServerRun = false;
+            ViewModel = new MainWindowViewModel(ApplicationMainModel.Instance);
+            this.DataContext = ViewModel;
         }
 
         private void Settings_Button_Click(object sender, RoutedEventArgs e)
@@ -83,6 +90,7 @@ namespace FlightSimulator
 
         void DataWindow_Closing(object sender, CancelEventArgs e)
         {
+            ViewModel.StopCommand.Execute(null);
             if (InfoServer != null && InfoServer.IsAlive && InfoServerTCPListener != null)
             {
                 shouldInfoServerRun = false;

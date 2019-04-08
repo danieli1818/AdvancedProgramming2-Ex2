@@ -29,7 +29,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button HorizontalAlignment="Right" Margin="4" Click="Connect_Button_Click">Connect</Button>
+                <Button HorizontalAlignment="Right" Margin="4" Command="{Binding ConnectCommand}">Connect</Button>
                 <Button Grid.Column="1" HorizontalAlignment="Left" Margin="4" Click="Settings_Button_Click">Settings</Button>
                 <views:FlightBoard Grid.Row="1" Grid.ColumnSpan="2"></views:FlightBoard>
             </Grid>
