@@ -1,6 +1,8 @@
 ﻿using FlightSimulator.Model.Interface;
+using FlightSimulator.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -13,8 +15,16 @@ namespace FlightSimulator.Model
 {
     class ApplicationMainModel : IMainModel
     {
+        private static IList<String> m_planeProperties = DataXMLReader.getPlaneProperties();
+        private static IList<String> m_planePropertiesPaths = DataXMLReader.getPlanePropertiesPaths();
+        private IList<double> m_planePropertiesValues;
+        private Mutex m_mutex;
+
         #region Singleton
         private static IMainModel m_instance = null;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public static IMainModel Instance
         {
             get
@@ -30,6 +40,8 @@ namespace FlightSimulator.Model
         private ApplicationMainModel()
         {
             SettingsModel = ApplicationSettingsModel.Instance;
+            m_planePropertiesValues = null;
+            m_mutex = new Mutex();
         }
         #endregion
 
@@ -81,10 +93,39 @@ namespace FlightSimulator.Model
 
                 //ns.Write(hello, 0, hello.Length);     //sending the message
 
+                m_planePropertiesValues = null;
+                StreamReader sr = new StreamReader(ns);
+                string line = sr.ReadLine();
+                
                 while (client.Connected && ShouldInfoServerRun)  //while the client is connected, we look for incoming messages
                 {
-                    StreamReader sr = new StreamReader(ns);
-                    string line = sr.ReadLine();
+                    if (line == null)
+                    {
+                        client.Close();
+                        client = null;
+                    }
+                    if (m_planePropertiesValues == null)
+                    {
+                        m_planePropertiesValues = line.Split(",".ToArray()).ToList().ConvertAll<double>((String str) => double.Parse(str));
+                        foreach (String propertyName in m_planeProperties)
+                        {
+                            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                        }
+                    } else
+                    {
+                        List<double> newPlanePropertiesValues = line.Split(",".ToArray()).ToList().ConvertAll<double>((String str) => double.Parse(str));
+                        for (int i = 0; i < m_planePropertiesValues.Count; i++)
+                        {
+                            if (newPlanePropertiesValues[i] != m_planePropertiesValues[i])
+                            {
+                                m_mutex.WaitOne();
+                                m_planePropertiesValues[i] = newPlanePropertiesValues[i];
+                                PropertyChanged(this, new PropertyChangedEventArgs(m_planeProperties[i]));
+                                m_mutex.ReleaseMutex();
+                            }
+                        }
+                    }
+                    line = sr.ReadLine();
                 }
             }
         }
@@ -136,6 +177,21 @@ namespace FlightSimulator.Model
                 Client.Close();
             }
             
+        }
+
+        public double getValueOfProperty(String propertyName)
+        {
+            for (int i = 0; i < m_planeProperties.Count; i++)
+            {
+                if (m_planeProperties[i].Equals(propertyName))
+                {
+                    m_mutex.WaitOne();
+                    double returnValue = m_planePropertiesValues[i];
+                    m_mutex.ReleaseMutex();
+                    return returnValue;
+                }
+            }
+            throw new Exception("No Property Named: " + propertyName);
         }
     }
 }

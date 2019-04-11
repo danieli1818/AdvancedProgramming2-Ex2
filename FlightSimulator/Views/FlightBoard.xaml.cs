@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FlightSimulator.Model;
 using FlightSimulator.ViewModels;
+using FlightSimulator.ViewModels.Windows;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 
@@ -39,14 +40,25 @@ namespace FlightSimulator.Views
 
             plotter.AddLineGraph(planeLocations, 2, "Route");
         }
-
+        
         private void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon"))
+            if(e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon")) 
             {
-                Point p1 = new Point(0,0);            // Fill here!
+                MainWindowViewModel mwvm = sender as MainWindowViewModel;
+                if (mwvm == null)
+                {
+                    throw new Exception("Not Valid Sender!!!!");
+                }
+                Point p1 = new Point(mwvm.Lat, mwvm.Lon);            // Fill here!
                 planeLocations.AppendAsync(Dispatcher, p1);
+                planeLocations.ResumeUpdate();
             }
+        }
+
+        public void addPropertyChangedFunctionToINotifyPropertyChanged(INotifyPropertyChanged npc)
+        {
+            npc.PropertyChanged += Vm_PropertyChanged;
         }
 
     }

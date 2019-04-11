@@ -1,7 +1,9 @@
 ﻿using FlightSimulator.Model;
 using FlightSimulator.Model.Interface;
+using FlightSimulator.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +15,38 @@ namespace FlightSimulator.ViewModels.Windows
     {
         private IMainModel model;
 
+        private FlightBoardViewModel flightBoardViewModel;
+
         public MainWindowViewModel(IMainModel model)
         {
             this.model = model;
+            model.PropertyChanged += handlePropertyChanged;
+            //flightBoardViewModel = new FlightBoardViewModel();
+        }
+
+        private void handlePropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName.Equals("longitude-deg"))
+            {
+                Lon = model.getValueOfProperty(args.PropertyName);
+                NotifyPropertyChanged("Lon");
+            } else if (args.PropertyName.Equals("latitude-deg"))
+            {
+                Lat = model.getValueOfProperty(args.PropertyName);
+                NotifyPropertyChanged("Lat");
+            }
+        }
+
+        public double Lon
+        {
+            get;
+            private set;
+        }
+
+        public double Lat
+        {
+            get;
+            private set;
         }
 
         /*

@@ -34,6 +34,7 @@ namespace FlightSimulator
             InitializeComponent();
             ViewModel = new MainWindowViewModel(ApplicationMainModel.Instance);
             this.DataContext = ViewModel;
+            FlightBoard.addPropertyChangedFunctionToINotifyPropertyChanged(ViewModel);
         }
 
         void DataWindow_Closing(object sender, CancelEventArgs e)

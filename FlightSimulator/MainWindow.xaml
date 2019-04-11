@@ -31,7 +31,7 @@
                 </Grid.ColumnDefinitions>
                 <Button HorizontalAlignment="Right" Margin="4" Command="{Binding ConnectCommand}">Connect</Button>
                 <Button Grid.Column="1" HorizontalAlignment="Left" Margin="4" Command="{Binding ClickSettingsButtonCommand}">Settings</Button>
-                <views:FlightBoard Grid.Row="1" Grid.ColumnSpan="2"></views:FlightBoard>
+                <views:FlightBoard x:Name="FlightBoard" Grid.Row="1" Grid.ColumnSpan="2"></views:FlightBoard>
             </Grid>
             <TabControl Grid.Row="1" Grid.Column="1">
                 <TabItem Header="Manual">
