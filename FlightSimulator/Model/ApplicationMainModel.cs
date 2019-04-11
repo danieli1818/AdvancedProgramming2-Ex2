@@ -108,18 +108,32 @@ namespace FlightSimulator.Model
             }
         }
 
+        public void SendCommand(string command)
+        {
+            if (Client != null && Client.Connected)
+            {
+                NetworkStream stream = Client.GetStream();
+                StreamWriter sw = new StreamWriter(stream);
+                sw.WriteLine(command);
+                sw.Flush();
+            } // TODO Check What To Do If Not Connected
+        }
+
         public void Stop()
         {
             if (InfoServerThread != null && InfoServerThread.IsAlive)
             {
                 ShouldInfoServerRun = false;
                 InfoServerTCPListener.Stop();
-                Client.Close();
                 //System.Threading.Thread.Sleep(5000);
                 if (InfoServerThread.IsAlive)
                 {
                     InfoServerThread.Abort();
                 }
+            }
+            if (Client != null && Client.Connected)
+            {
+                Client.Close();
             }
             
         }

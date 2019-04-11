@@ -30,7 +30,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button HorizontalAlignment="Right" Margin="4" Command="{Binding ConnectCommand}">Connect</Button>
-                <Button Grid.Column="1" HorizontalAlignment="Left" Margin="4" Click="Settings_Button_Click">Settings</Button>
+                <Button Grid.Column="1" HorizontalAlignment="Left" Margin="4" Command="{Binding ClickSettingsButtonCommand}">Settings</Button>
                 <views:FlightBoard Grid.Row="1" Grid.ColumnSpan="2"></views:FlightBoard>
             </Grid>
             <TabControl Grid.Row="1" Grid.Column="1">
@@ -91,10 +91,39 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.ColumnSpan="2">
-                            
+                        <TextBox Grid.ColumnSpan="2" Name="AutoPilotTextBox" AcceptsReturn="True">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <EventTrigger RoutedEvent="TextChanged">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="LightPink" Duration="0"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
                         </TextBox>
-                        <Button Grid.Row="1" HorizontalAlignment="Right" Margin="4">
+                        <Button Grid.Row="1" Name="OKButton" HorizontalAlignment="Right" Margin="4" Command="{Binding SendCommand}" CommandParameter="{Binding ElementName=AutoPilotTextBox, Path=Text}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <EventTrigger RoutedEvent="Click">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetName="AutoPilotTextBox" Storyboard.TargetProperty="Background.Color" To="LightPink" Duration="0"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
                             OK
                         </Button>
                         <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="4">

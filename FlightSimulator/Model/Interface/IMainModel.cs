@@ -13,6 +13,7 @@ namespace FlightSimulator.Model.Interface
         TcpClient Client { get; set; } // The Client
 
         void Connect();
+        void SendCommand(string command);
         void Stop();
     }
 }

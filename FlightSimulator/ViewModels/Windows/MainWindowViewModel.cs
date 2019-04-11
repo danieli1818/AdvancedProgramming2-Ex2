@@ -91,6 +91,39 @@ namespace FlightSimulator.ViewModels.Windows
             model.Stop();
         }
         #endregion
+        #region SendCommand
+        private ICommand _sendCommand;
+        public ICommand SendCommand
+        {
+            get
+            {
+                return _sendCommand ?? (_sendCommand = new CommandHandlerWithParameter<string>((string param) => OnSend(param)));
+            }
+        }
+        private void OnSend(string param)
+        {
+            model.SendCommand(param);
+        }
+        #endregion
+        #region ClickSettingsButtonCommand
+        private ICommand _clickSettingsButtonCommand;
+        public ICommand ClickSettingsButtonCommand
+        {
+            get
+            {
+                return _clickSettingsButtonCommand ?? (_clickSettingsButtonCommand = new CommandHandler(() => OnClickSettingsButton()));
+            }
+        }
+        private Settings _settingsWindow;
+        private void OnClickSettingsButton()
+        {
+            if (_settingsWindow == null || !_settingsWindow.IsLoaded)
+            {
+                _settingsWindow = new Settings();
+                _settingsWindow.Show();
+            }
+        }
+        #endregion
         #endregion
     }
 }
