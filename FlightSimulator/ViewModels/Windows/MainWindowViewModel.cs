@@ -198,50 +198,6 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
-        /*
-        public string FlightServerIP
-        {
-            get { return model.FlightServerIP; }
-            set
-            {
-                model.FlightServerIP = value;
-                NotifyPropertyChanged("FlightServerIP");
-            }
-        }
-
-        public int FlightCommandPort
-        {
-            get { return model.FlightCommandPort; }
-            set
-            {
-                model.FlightCommandPort = value;
-                NotifyPropertyChanged("FlightCommandPort");
-            }
-        }
-
-        public int FlightInfoPort
-        {
-            get { return model.FlightInfoPort; }
-            set
-            {
-                model.FlightInfoPort = value;
-                NotifyPropertyChanged("FlightInfoPort");
-            }
-        }
-
-
-
-        public void SaveSettings()
-        {
-            model.SaveSettings();
-        }
-
-        public void ReloadSettings()
-        {
-            model.ReloadSettings();
-        }
-        */
-
         #region Commands
         #region ConnectCommand
         private ICommand _connectCommand;
