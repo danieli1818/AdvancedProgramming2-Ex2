@@ -198,6 +198,7 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
+
         #region Commands
         #region ConnectCommand
         private ICommand _connectCommand;
