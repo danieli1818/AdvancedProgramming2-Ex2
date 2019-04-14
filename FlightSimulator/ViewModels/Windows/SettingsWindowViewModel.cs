@@ -3,6 +3,7 @@ using FlightSimulator.Model.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,9 +25,28 @@ namespace FlightSimulator.ViewModels.Windows
             get { return model.FlightServerIP; }
             set
             {
+                if (!isValidIPv4(value))
+                {
+                    throw new ArgumentException("Please Enter A Valid IPv4!");
+                }
                 model.FlightServerIP = value;
                 NotifyPropertyChanged("FlightServerIP");
             }
+        }
+
+        private bool isValidIPv4(String str)
+        {
+            if (String.IsNullOrEmpty(str))
+            {
+                return false;
+            }
+            String[] splittedValues = str.Split('.');
+            if (splittedValues.Length != 4)
+            {
+                return false;
+            }
+            byte temp;
+            return splittedValues.All(value => byte.TryParse(value, out temp));
         }
 
         public int FlightCommandPort

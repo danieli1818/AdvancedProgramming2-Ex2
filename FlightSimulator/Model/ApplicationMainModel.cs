@@ -154,7 +154,7 @@ namespace FlightSimulator.Model
             }
         }
 
-        public void SendCommand(string command)
+        public int SendCommand(string command)
         {
             if (Client != null && Client.Connected)
             {
@@ -162,9 +162,10 @@ namespace FlightSimulator.Model
                 StreamWriter sw = new StreamWriter(stream);
                 sw.WriteLine(command);
                 sw.Flush();
+                return 0;
             } else // TODO Check What To Do If Not Connected
             {
-                System.Windows.MessageBox.Show("Error The Client Isn't Connected Please Click The Connect Button First!", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                return -1;
             }
         }
 

@@ -22,7 +22,7 @@ namespace FlightSimulator.Model.Interface
         void handleKnobMouseMove(Point startPoint, Point newPoint);
 
         void Connect();
-        void SendCommand(string command);
+        int SendCommand(string command);
         void Stop();
     }
 }

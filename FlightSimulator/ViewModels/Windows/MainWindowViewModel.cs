@@ -51,17 +51,32 @@ namespace FlightSimulator.ViewModels.Windows
             model.handleKnobMouseMove(startPoint, newPoint);
             if (Aileron != model.ValueXKnob)
             {
-                Aileron = model.ValueXKnob;
-                NotifyPropertyChanged("Aileron");
-                model.SendCommand("set /controls/flight/aileron " + Aileron);
+                if (sendCommand("set /controls/flight/aileron " + model.ValueXKnob) == 0)
+                {
+                    Aileron = model.ValueXKnob;
+                    NotifyPropertyChanged("Aileron");
+                } else
+                {
+                    return;
+                }
             }
             if (Elevator != model.ValueYKnob)
             {
-                Elevator = model.ValueYKnob;
-                NotifyPropertyChanged("Elevator");
-                model.SendCommand("set /controls/flight/elevator " + Elevator);
+                if (sendCommand("set /controls/flight/elevator " + model.ValueYKnob) == 0)
+                {
+                    Elevator = model.ValueYKnob;
+                    NotifyPropertyChanged("Elevator");
+                } else
+                {
+                    return;
+                }
             }
 
+        }
+
+        private void sendConnectionErrorMessage()
+        {
+            System.Windows.MessageBox.Show("Error The Client Isn't Connected Please Click The Connect Button First!", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public double Aileron
@@ -129,9 +144,14 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
-        private void sendCommand(string command)
+        private int sendCommand(string command)
         {
-            model.SendCommand(command);
+            int returnValue = model.SendCommand(command);
+            if (returnValue == -1)
+            {
+                sendConnectionErrorMessage();
+            }
+            return returnValue;
         }
 
         private double m_throttle;
@@ -147,9 +167,11 @@ namespace FlightSimulator.ViewModels.Windows
                 double newValue = Math.Floor(value * 100) / 100;
                 if (newValue != m_throttle)
                 {
-                    m_throttle = newValue;
-                    sendCommand("set /controls/engines/current-engine/throttle " + Throttle);
-                    NotifyPropertyChanged("Throttle");
+                    if (sendCommand("set /controls/engines/current-engine/throttle " + newValue) == 0)
+                    {
+                        m_throttle = newValue;
+                        NotifyPropertyChanged("Throttle");
+                    }
                 }
             }
         }
@@ -167,9 +189,11 @@ namespace FlightSimulator.ViewModels.Windows
                 double newValue = Math.Floor(value * 100) / 100;
                 if (newValue != m_rudder)
                 {
-                    m_rudder = newValue;
-                    sendCommand("set /controls/flight/rudder " + Rudder);
-                    NotifyPropertyChanged("Rudder");
+                    if (sendCommand("set /controls/flight/rudder " + Rudder) == 0)
+                    {
+                        m_rudder = newValue;
+                        NotifyPropertyChanged("Rudder");
+                    }
                 }
             }
         }
@@ -291,8 +315,10 @@ namespace FlightSimulator.ViewModels.Windows
         }
         private void OnOkButtonClick(String command)
         {
-            sendCommand(command);
-            AutoPilotTextBoxColor = Brushes.White;
+            if (sendCommand(command) == 0)
+            {
+                AutoPilotTextBoxColor = Brushes.White;
+            }
         }
         #endregion
         #region ClearButtonClickCommand
