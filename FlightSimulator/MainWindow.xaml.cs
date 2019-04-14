@@ -35,11 +35,26 @@ namespace FlightSimulator
             ViewModel = new MainWindowViewModel(ApplicationMainModel.Instance);
             this.DataContext = ViewModel;
             FlightBoard.addPropertyChangedFunctionToINotifyPropertyChanged(ViewModel);
+            Joystick.KnobMouseMoveCapturedEvent += ViewModel.handleKnobMove;
+            //ViewModel.PropertyChanged += (object sender, PropertyChangedEventArgs args) =>
+            //{
+                /*DependencyObject property = FindName(args.PropertyName + "Value") as DependencyObject;
+                if (property != null)
+                {
+                    BindingOperations.GetBindingExpression(property, ContentProperty).UpdateTarget();
+                }*/
+            //};
+            //ViewModel.UpdatePropertiesEvent += () =>
+            //{
+                //BindingOperations.GetBindingExpression(AileronValue, ContentProperty).UpdateTarget();
+                //BindingOperations.GetBindingExpression(ElevatorValue, ContentProperty).UpdateTarget();
+            //};
         }
 
         void DataWindow_Closing(object sender, CancelEventArgs e)
         {
             ViewModel.StopCommand.Execute(null);
         }
+
     }
 }

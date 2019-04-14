@@ -10,6 +10,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
 
 namespace FlightSimulator.Model
 {
@@ -50,6 +52,8 @@ namespace FlightSimulator.Model
         private bool ShouldInfoServerRun { get; set; }
         private ISettingsModel SettingsModel { get; set; }
         private Thread InfoServerThread { get; set; }
+        public double ValueXKnob { get; set; }
+        public double ValueYKnob { get; set; }
 
         public void Connect()
         {
@@ -97,12 +101,13 @@ namespace FlightSimulator.Model
                 StreamReader sr = new StreamReader(ns);
                 string line = sr.ReadLine();
                 
-                while (client.Connected && ShouldInfoServerRun)  //while the client is connected, we look for incoming messages
+                while (client != null && client.Connected && ShouldInfoServerRun)  //while the client is connected, we look for incoming messages
                 {
                     if (line == null)
                     {
                         client.Close();
                         client = null;
+                        break;
                     }
                     if (m_planePropertiesValues == null)
                     {
@@ -157,7 +162,10 @@ namespace FlightSimulator.Model
                 StreamWriter sw = new StreamWriter(stream);
                 sw.WriteLine(command);
                 sw.Flush();
-            } // TODO Check What To Do If Not Connected
+            } else // TODO Check What To Do If Not Connected
+            {
+                System.Windows.MessageBox.Show("Error The Client Isn't Connected Please Click The Connect Button First!", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void Stop()
@@ -192,6 +200,43 @@ namespace FlightSimulator.Model
                 }
             }
             throw new Exception("No Property Named: " + propertyName);
+        }
+
+        public void handleKnobMouseMove(Point startPoint, Point newPoint)
+        {
+            ///!!!!!!!!!!!!!!!!!
+            /// YOU MUST CHANGE THE FUNCTION!!!!
+            ///!!!!!!!!!!!!!!
+            
+            if (startPoint == newPoint) // TODO change this to handle return base 
+            {
+                ValueXKnob = 0;
+                ValueYKnob = 0;
+            }
+
+
+            Point deltaPos = new Point(newPoint.X - startPoint.X, newPoint.Y - startPoint.Y);
+
+            double distance = Math.Round(Math.Sqrt(deltaPos.X * deltaPos.X + deltaPos.Y * deltaPos.Y));
+
+            ValueXKnob = deltaPos.X;
+            ValueYKnob = -deltaPos.Y;
+            /*if (distance >= canvasWidth / 2 || distance >= canvasHeight / 2)
+                return;
+            Aileron = -deltaPos.Y;
+            Elevator = deltaPos.X;
+
+            knobPosition.X = deltaPos.X;
+            knobPosition.Y = deltaPos.Y;
+
+            if (Moved == null ||
+                (!(Math.Abs(_prevAileron - Aileron) > AileronStep) && !(Math.Abs(_prevElevator - Elevator) > ElevatorStep)))
+                return;
+
+            Moved?.Invoke(this, new VirtualJoystickEventArgs { Aileron = Aileron, Elevator = Elevator });
+            _prevAileron = Aileron;
+            _prevElevator = Elevator;*/
+            
         }
     }
 }

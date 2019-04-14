@@ -68,17 +68,25 @@
                         <Label Grid.Row="4" Grid.ColumnSpan="5" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">
                             🠐 rudder 🠒
                         </Label>
-                        <Slider Grid.Row="2" Grid.Column="1" Name="ThrottleSlider" Orientation="Vertical" Minimum="-1" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight">
+                        <Slider Grid.Row="2" Grid.Column="1" Name="ThrottleSlider" Orientation="Vertical" Minimum="-1" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight" Value="{Binding Throttle}">
                         </Slider>
-                        <Slider Grid.Row="3" Grid.Column="2" Name="RudderSlider" Minimum="-1" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight">
+                        <Slider Grid.Row="3" Grid.Column="2" Name="RudderSlider" Minimum="-1" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight" Value="{Binding Rudder}">
                         </Slider>
-                        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Content="{Binding ElementName=ThrottleSlider, Path=Value}">
+                        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Content="{Binding Throttle}">
 
                         </Label>
-                        <Label Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" Content="{Binding ElementName=RudderSlider, Path=Value}">
+                        <Label Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" Content="{Binding Rudder}">
 
                         </Label>
-                        <views:Joystick Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="7"></views:Joystick>
+                        <Label Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Content="{Binding Elevator}" Name="ElevatorValue">
+                            <Label.LayoutTransform>
+                                <RotateTransform Angle="90"></RotateTransform>
+                            </Label.LayoutTransform>
+                        </Label>
+                        <Label Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Content="{Binding Aileron}" x:Name="AileronValue">
+
+                        </Label>
+                        <views:Joystick Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="7" x:Name="Joystick"></views:Joystick>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Auto Pilot">
@@ -91,42 +99,12 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.ColumnSpan="2" Name="AutoPilotTextBox" AcceptsReturn="True">
-                            <TextBox.Style>
-                                <Style TargetType="TextBox">
-                                    <Style.Triggers>
-                                        <EventTrigger RoutedEvent="TextChanged">
-                                            <EventTrigger.Actions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="LightPink" Duration="0"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger.Actions>
-                                        </EventTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
+                        <TextBox Grid.ColumnSpan="2" Name="AutoPilotTextBox" AcceptsReturn="True" Text="{Binding AutoPilotText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="{Binding AutoPilotTextBoxColor}">
                         </TextBox>
-                        <Button Grid.Row="1" Name="OKButton" HorizontalAlignment="Right" Margin="4" Command="{Binding SendCommand}" CommandParameter="{Binding ElementName=AutoPilotTextBox, Path=Text}">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Style.Triggers>
-                                        <EventTrigger RoutedEvent="Click">
-                                            <EventTrigger.Actions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Storyboard.TargetName="AutoPilotTextBox" Storyboard.TargetProperty="Background.Color" To="LightPink" Duration="0"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger.Actions>
-                                        </EventTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
+                        <Button Grid.Row="1" Name="OKButton" HorizontalAlignment="Right" Margin="4" Command="{Binding OkButtonClickCommand}" CommandParameter="{Binding ElementName=AutoPilotTextBox, Path=Text}">
                             OK
                         </Button>
-                        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="4">
+                        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="4" Command="{Binding ClearButtonClickCommand}">
                             Clear
                         </Button>
                     </Grid>

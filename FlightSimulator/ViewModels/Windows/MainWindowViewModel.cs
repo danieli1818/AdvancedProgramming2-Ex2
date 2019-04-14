@@ -7,7 +7,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace FlightSimulator.ViewModels.Windows
 {
@@ -15,12 +19,17 @@ namespace FlightSimulator.ViewModels.Windows
     {
         private IMainModel model;
 
-        private FlightBoardViewModel flightBoardViewModel;
+        private String m_autoPilotText;
+
+        //private FlightBoardViewModel flightBoardViewModel;
 
         public MainWindowViewModel(IMainModel model)
         {
             this.model = model;
             model.PropertyChanged += handlePropertyChanged;
+            Aileron = 0;
+            Lat = 0;
+            m_autoPilotText = "";
             //flightBoardViewModel = new FlightBoardViewModel();
         }
 
@@ -37,6 +46,36 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
+        public void handleKnobMove(Point startPoint, Point newPoint)
+        {
+            model.handleKnobMouseMove(startPoint, newPoint);
+            if (Aileron != model.ValueXKnob)
+            {
+                Aileron = model.ValueXKnob;
+                NotifyPropertyChanged("Aileron");
+                model.SendCommand("set /controls/flight/aileron " + Aileron);
+            }
+            if (Elevator != model.ValueYKnob)
+            {
+                Elevator = model.ValueYKnob;
+                NotifyPropertyChanged("Elevator");
+                model.SendCommand("set /controls/flight/elevator " + Elevator);
+            }
+
+        }
+
+        public double Aileron
+        {
+            get;
+            private set;
+        }
+
+        public double Elevator
+        {
+            get;
+            private set;
+        }
+
         public double Lon
         {
             get;
@@ -47,6 +86,92 @@ namespace FlightSimulator.ViewModels.Windows
         {
             get;
             private set;
+        }
+
+        public String AutoPilotText
+        {
+            get
+            {
+                return m_autoPilotText;
+            }
+            set
+            {
+                if (m_autoPilotText != value)
+                {
+                    m_autoPilotText = value;
+                    NotifyPropertyChanged("AutoPilotText");
+                    if (m_autoPilotText != "")
+                    {
+                        AutoPilotTextBoxColor = Brushes.LightPink;
+                    } else
+                    {
+                        AutoPilotTextBoxColor = Brushes.White;
+                    }
+                }
+            }
+        }
+
+        private Brush m_autoPilotTextBoxColor;
+
+        public Brush AutoPilotTextBoxColor
+        {
+            get
+            {
+                return m_autoPilotTextBoxColor;
+            }
+            private set
+            {
+                if (m_autoPilotTextBoxColor == null || !m_autoPilotTextBoxColor.Equals(value))
+                {
+                    m_autoPilotTextBoxColor = value;
+                    NotifyPropertyChanged("AutoPilotTextBoxColor");
+                }
+            }
+        }
+
+        private void sendCommand(string command)
+        {
+            model.SendCommand(command);
+        }
+
+        private double m_throttle;
+
+        public double Throttle
+        {
+            get
+            {
+                return m_throttle;
+            }
+            set
+            {
+                double newValue = Math.Floor(value * 100) / 100;
+                if (newValue != m_throttle)
+                {
+                    m_throttle = newValue;
+                    sendCommand("set /controls/engines/current-engine/throttle " + Throttle);
+                    NotifyPropertyChanged("Throttle");
+                }
+            }
+        }
+
+        private double m_rudder;
+
+        public double Rudder
+        {
+            get
+            {
+                return m_rudder;
+            }
+            set
+            {
+                double newValue = Math.Floor(value * 100) / 100;
+                if (newValue != m_rudder)
+                {
+                    m_rudder = newValue;
+                    sendCommand("set /controls/flight/rudder " + Rudder);
+                    NotifyPropertyChanged("Rudder");
+                }
+            }
         }
 
         /*
@@ -153,6 +278,35 @@ namespace FlightSimulator.ViewModels.Windows
                 _settingsWindow = new Settings();
                 _settingsWindow.Show();
             }
+        }
+        #endregion
+        #region OkButtonClickCommand
+        private ICommand _okButtonClickCommand;
+        public ICommand OkButtonClickCommand
+        {
+            get
+            {
+                return _okButtonClickCommand ?? (_okButtonClickCommand = new CommandHandlerWithParameter<string>((String command) => OnOkButtonClick(command)));
+            }
+        }
+        private void OnOkButtonClick(String command)
+        {
+            sendCommand(command);
+            AutoPilotTextBoxColor = Brushes.White;
+        }
+        #endregion
+        #region ClearButtonClickCommand
+        private ICommand _clearButtonClickCommand;
+        public ICommand ClearButtonClickCommand
+        {
+            get
+            {
+                return _clearButtonClickCommand ?? (_clearButtonClickCommand = new CommandHandler(() => OnClearButtonClick()));
+            }
+        }
+        private void OnClearButtonClick()
+        {
+            AutoPilotText = "";
         }
         #endregion
         #endregion

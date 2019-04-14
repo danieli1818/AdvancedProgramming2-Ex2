@@ -59,6 +59,9 @@ namespace FlightSimulator.ViewModels.Windows
         public void ReloadSettings()
         {
             model.ReloadSettings();
+            NotifyPropertyChanged("FlightServerIP");
+            NotifyPropertyChanged("FlightInfoPort");
+            NotifyPropertyChanged("FlightCommandPort");
         }
 
         #region Commands
@@ -73,7 +76,7 @@ namespace FlightSimulator.ViewModels.Windows
         }
         private void OnClick()
         {
-            model.SaveSettings();
+            SaveSettings();
         }
         #endregion
 
@@ -88,7 +91,7 @@ namespace FlightSimulator.ViewModels.Windows
         }
         private void OnCancel()
         {
-            model.ReloadSettings();
+            ReloadSettings();
         }
         #endregion
         #endregion
