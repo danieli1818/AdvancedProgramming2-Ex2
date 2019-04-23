@@ -136,7 +136,9 @@
     <Folder Include="Views\Windows\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Utils\Files\generic_small.xml" />
+    <Content Include="Utils\Files\generic_small.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

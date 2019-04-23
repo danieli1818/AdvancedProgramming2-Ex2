@@ -134,9 +134,6 @@ namespace FlightSimulator.Views
 
         private void Knob_MouseMove(object sender, MouseEventArgs e)
         {
-            ///!!!!!!!!!!!!!!!!!
-            /// YOU MUST CHANGE THE FUNCTION!!!!
-            ///!!!!!!!!!!!!!!
 
             if (!Knob.IsMouseCaptured) return;
 
@@ -148,7 +145,7 @@ namespace FlightSimulator.Views
             if (distance >= canvasWidth / 2 || distance >= canvasHeight / 2)
                 return;
 
-            KnobMouseMoveCapturedEvent?.Invoke(_startPos, newPos); // I add it.
+            KnobMouseMoveCapturedEvent?.Invoke(_startPos, newPos, canvasWidth, canvasHeight); // I add it.
 
             Aileron = -deltaPos.Y;
             Elevator = deltaPos.X;
@@ -175,13 +172,17 @@ namespace FlightSimulator.Views
         private void centerKnob_Completed(object sender, EventArgs e)
         {
             Aileron = Elevator = _prevAileron = _prevElevator = 0;
-            KnobMouseMoveCapturedEvent?.Invoke(_startPos, _startPos); // I add it. TODO ADD RELEASE KNOB FUNCTION
+            KnobMouseResetEvent?.Invoke(); // I add it.
             Released?.Invoke(this);
         }
 
-        public delegate void KnobMouseMoveCaptured(Point startPoint, Point newPoint);
+        public delegate void KnobMouseMoveCaptured(Point startPoint, Point newPoint, double canvasWidth, double canvasHeight);
+
+        public delegate void KnobMouseReset();
 
         public event KnobMouseMoveCaptured KnobMouseMoveCapturedEvent;
+
+        public event KnobMouseReset KnobMouseResetEvent;
 
     }
 }

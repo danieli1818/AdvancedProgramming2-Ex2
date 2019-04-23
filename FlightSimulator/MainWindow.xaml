@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:FlightSimulator"
         xmlns:views="clr-namespace:FlightSimulator.Views"
         mc:Ignorable="d"
-        Closing="DataWindow_Closing"
         Title="MainWindow" Height="527.238" Width="878.918">
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid>
@@ -68,7 +67,7 @@
                         <Label Grid.Row="4" Grid.ColumnSpan="5" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">
                             🠐 rudder 🠒
                         </Label>
-                        <Slider Grid.Row="2" Grid.Column="1" Name="ThrottleSlider" Orientation="Vertical" Minimum="-1" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight" Value="{Binding Throttle}">
+                        <Slider Grid.Row="2" Grid.Column="1" Name="ThrottleSlider" Orientation="Vertical" Minimum="0" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight" Value="{Binding Throttle}">
                         </Slider>
                         <Slider Grid.Row="3" Grid.Column="2" Name="RudderSlider" Minimum="-1" Maximum="1" TickFrequency="0.05" TickPlacement="BottomRight" Value="{Binding Rudder}">
                         </Slider>

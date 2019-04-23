@@ -13,16 +13,32 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
+/// <summary>
+/// The FlightSimulator.ViewModels.Windows Namespace of the Windows View Models.
+/// </summary>
 namespace FlightSimulator.ViewModels.Windows
 {
+    /// <summary>
+    /// The MainWindowViewModel Class is The View Model Class of the Main Window.
+    /// It implements BaseNotify.
+    /// </summary>
     public class MainWindowViewModel : BaseNotify
     {
+        /// <summary>
+        /// The model IMainModel member which holds the model of the Main Window.
+        /// </summary>
         private IMainModel model;
 
+        /// <summary>
+        /// The m_autoPilotText String member which holds the Auto Pilot Text.
+        /// </summary>
         private String m_autoPilotText;
 
-        //private FlightBoardViewModel flightBoardViewModel;
-
+        /// <summary>
+        /// The MainWindowViewModel constructor gets as a parameter
+        /// an IMainModel model of the Main Window.
+        /// <param name="model">IMainModel model of the Main Window.</para>
+        /// </summary>
         public MainWindowViewModel(IMainModel model)
         {
             this.model = model;
@@ -30,9 +46,17 @@ namespace FlightSimulator.ViewModels.Windows
             Aileron = 0;
             Lat = 0;
             m_autoPilotText = "";
-            //flightBoardViewModel = new FlightBoardViewModel();
         }
 
+        /// <summary>
+        /// The handlePropertyChanged function gets as parameters
+        /// an object sender and PropertyChangedEventArgs args
+        /// of the property that changed and takes the value of the changed property
+        /// of the model and updates the value in this instance of the class.
+        /// <param name="sender">object sender of the property changed event.</para>
+        /// <param name="args">PropertyChangedEventArgs args of the information
+        /// about the property that changed.</param>
+        /// </summary>
         private void handlePropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName.Equals("longitude-deg"))
@@ -46,25 +70,36 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
-        public void handleKnobMove(Point startPoint, Point newPoint)
+        /// <summary>
+        /// The handleKnobMove function gets as parameters
+        /// a Point startPoint, a Point newPoint, double width and double height
+        /// and handles the movement of the knob from the startPoint to the newPoint.
+        /// <param name="startPoint">Point startPoint of the knob.</para>
+        /// <param name="newPoint">Point newPoint of the knob.</param>
+        /// <param name="width">double width of the Joystick.</param>
+        /// <param name="height">double height of the Joystick.</param>
+        /// </summary>
+        public void handleKnobMove(Point startPoint, Point newPoint, double width, double height)
         {
             model.handleKnobMouseMove(startPoint, newPoint);
-            if (Aileron != model.ValueXKnob)
+            double newAileronValue = Math.Floor((model.ValueXKnob / (width / 2)) * 100) / 100;
+            if (Aileron != newAileronValue)
             {
                 if (sendCommand("set /controls/flight/aileron " + model.ValueXKnob) == 0)
                 {
-                    Aileron = model.ValueXKnob;
+                    Aileron = newAileronValue;
                     NotifyPropertyChanged("Aileron");
                 } else
                 {
                     return;
                 }
             }
-            if (Elevator != model.ValueYKnob)
+            double newElevatorValue = Math.Floor((model.ValueYKnob / (height / 2)) * 100) / 100;
+            if (Elevator != newElevatorValue)
             {
                 if (sendCommand("set /controls/flight/elevator " + model.ValueYKnob) == 0)
                 {
-                    Elevator = model.ValueYKnob;
+                    Elevator = newElevatorValue;
                     NotifyPropertyChanged("Elevator");
                 } else
                 {
@@ -74,35 +109,66 @@ namespace FlightSimulator.ViewModels.Windows
 
         }
 
+        /// <summary>
+        /// The handleKnobReset function
+        /// handles when knob reset its place.
+        /// </summary>
+        public void handleKnobReset()
+        {
+            Aileron = 0;
+            Elevator = 0;
+            NotifyPropertyChanged("Aileron");
+            NotifyPropertyChanged("Elevator");
+
+        }
+
+        /// <summary>
+        /// The sendConnectionErrorMessage function sends an error message.
+        /// </summary>
         private void sendConnectionErrorMessage()
         {
             System.Windows.MessageBox.Show("Error The Client Isn't Connected Please Click The Connect Button First!", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        /// <summary>
+        /// The Aileron double Property.
+        /// </summary>
         public double Aileron
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// The Elevator Double Property.
+        /// </summary>
         public double Elevator
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// The Lon Double Property.
+        /// </summary>
         public double Lon
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// The Lat Double Property.
+        /// </summary>
         public double Lat
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// The AutoPilotText String Property of the text of the Auto Pilot TextBox.
+        /// </summary>
         public String AutoPilotText
         {
             get
@@ -126,8 +192,14 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
+        /// <summary>
+        /// The m_autoPilotTextBoxColor Brush member of the Background Color of the Auto Pilot TextBox.
+        /// </summary>
         private Brush m_autoPilotTextBoxColor;
 
+        /// <summary>
+        /// The AutoPilotTextBoxColor Brush Property of the Background Color of the Auto Pilot TextBox.
+        /// </summary>
         public Brush AutoPilotTextBoxColor
         {
             get
@@ -144,6 +216,14 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
+        /// <summary>
+        /// The sendCommand function gets as a parameter
+        /// a String command of a the command to send to the simulator
+        /// from the client and returns an int value of the return status of the function
+        /// for example 0 for success -1 for error.
+        /// <param name="command">String command to send to the simulator.</para>
+        /// <retValue>int value of return status of the function.</retValue>
+        /// </summary>
         private int sendCommand(string command)
         {
             int returnValue = model.SendCommand(command);
@@ -154,8 +234,14 @@ namespace FlightSimulator.ViewModels.Windows
             return returnValue;
         }
 
+        /// <summary>
+        /// The m_throttle Double member of the throttle value.
+        /// </summary>
         private double m_throttle;
 
+        /// <summary>
+        /// The Throttle Double Property of the throttle value.
+        /// </summary>
         public double Throttle
         {
             get
@@ -176,8 +262,14 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
+        /// <summary>
+        /// The m_rudder double member of the rudder value.
+        /// </summary>
         private double m_rudder;
 
+        /// <summary>
+        /// The Rudder double Property of the rudder value.
+        /// </summary>
         public double Rudder
         {
             get
