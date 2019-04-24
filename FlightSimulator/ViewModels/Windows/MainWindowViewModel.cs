@@ -88,7 +88,6 @@ namespace FlightSimulator.ViewModels.Windows
                 if (sendCommand("set /controls/flight/aileron " + newAileronValue) == 0)
                 {
                     Aileron = newAileronValue;
-                    NotifyPropertyChanged("Aileron");
                 } else
                 {
                     return;
@@ -100,7 +99,6 @@ namespace FlightSimulator.ViewModels.Windows
                 if (sendCommand("set /controls/flight/elevator " + newElevatorValue) == 0)
                 {
                     Elevator = newElevatorValue;
-                    NotifyPropertyChanged("Elevator");
                 } else
                 {
                     return;
@@ -115,19 +113,19 @@ namespace FlightSimulator.ViewModels.Windows
         /// </summary>
         public void handleKnobReset()
         {
-            Aileron = 0;
-            Elevator = 0;
-            if (sendCommand("set /controls/flight/aileron " + Aileron) == 0)
+            double newAileron = 0;
+            double newElevator = 0;
+            if (sendCommand("set /controls/flight/aileron " + newAileron) == 0)
             {
-                NotifyPropertyChanged("Aileron");
+                Aileron = newAileron;
             }
             else
             {
                 return;
             }
-            if (sendCommand("set /controls/flight/elevator " + Elevator) == 0)
+            if (sendCommand("set /controls/flight/elevator " + newElevator) == 0)
             {
-                NotifyPropertyChanged("Elevator");
+                Elevator = newElevator;
             }
             else
             {
@@ -145,21 +143,51 @@ namespace FlightSimulator.ViewModels.Windows
         }
 
         /// <summary>
+        /// The m_aileron double member.
+        /// </summary>
+        private double m_aileron;
+
+        /// <summary>
         /// The Aileron double Property.
         /// </summary>
         public double Aileron
         {
-            get;
-            private set;
+            get
+            {
+                return m_aileron;
+            }
+            private set
+            {
+                if (m_aileron != value)
+                {
+                    m_aileron = value;
+                    NotifyPropertyChanged("Aileron");
+                }
+            }
         }
+
+        /// <summary>
+        /// The m_elevator double member.
+        /// </summary>
+        private double m_elevator;
 
         /// <summary>
         /// The Elevator Double Property.
         /// </summary>
         public double Elevator
         {
-            get;
-            private set;
+            get
+            {
+                return m_elevator;
+            }
+            private set
+            {
+                if (m_elevator != value)
+                {
+                    m_elevator = value;
+                    NotifyPropertyChanged("Elevator");
+                }
+            }
         }
 
         /// <summary>
