@@ -85,7 +85,7 @@ namespace FlightSimulator.ViewModels.Windows
             double newAileronValue = Math.Floor((model.ValueXKnob / (width / 2)) * 100) / 100;
             if (Aileron != newAileronValue)
             {
-                if (sendCommand("set /controls/flight/aileron " + model.ValueXKnob) == 0)
+                if (sendCommand("set /controls/flight/aileron " + newAileronValue) == 0)
                 {
                     Aileron = newAileronValue;
                     NotifyPropertyChanged("Aileron");
@@ -97,7 +97,7 @@ namespace FlightSimulator.ViewModels.Windows
             double newElevatorValue = Math.Floor((model.ValueYKnob / (height / 2)) * 100) / 100;
             if (Elevator != newElevatorValue)
             {
-                if (sendCommand("set /controls/flight/elevator " + model.ValueYKnob) == 0)
+                if (sendCommand("set /controls/flight/elevator " + newElevatorValue) == 0)
                 {
                     Elevator = newElevatorValue;
                     NotifyPropertyChanged("Elevator");
@@ -117,8 +117,22 @@ namespace FlightSimulator.ViewModels.Windows
         {
             Aileron = 0;
             Elevator = 0;
-            NotifyPropertyChanged("Aileron");
-            NotifyPropertyChanged("Elevator");
+            if (sendCommand("set /controls/flight/aileron " + Aileron) == 0)
+            {
+                NotifyPropertyChanged("Aileron");
+            }
+            else
+            {
+                return;
+            }
+            if (sendCommand("set /controls/flight/elevator " + Elevator) == 0)
+            {
+                NotifyPropertyChanged("Elevator");
+            }
+            else
+            {
+                return;
+            }
 
         }
 
