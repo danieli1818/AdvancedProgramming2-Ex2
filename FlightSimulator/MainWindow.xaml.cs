@@ -19,6 +19,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+/// <summary>
+/// The FlightSimulator Namespace.
+/// </summary>
 namespace FlightSimulator
 {
     /// <summary>
@@ -27,30 +30,22 @@ namespace FlightSimulator
     public partial class MainWindow : Window
     {
 
+        /// <summary>
+        /// The ViewModel MainWindowViewModel Property of the Main Window's View Model.
+        /// </summary>
         public MainWindowViewModel ViewModel { get; set; }
 
+        /// <summary>
+        /// The MainWindow Constructor.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
             ViewModel = new MainWindowViewModel(ApplicationMainModel.Instance);
-            ViewModel.PropertyChanged += FlightBoard.Vm_PropertyChanged;
+            FlightBoard.addPropertyChangedFunctionToINotifyPropertyChanged(ViewModel);
             Joystick.KnobMouseMoveCapturedEvent += ViewModel.handleKnobMove;
             Joystick.KnobMouseResetEvent += ViewModel.handleKnobReset;
             this.DataContext = ViewModel;
-            //FlightBoard.addPropertyChangedFunctionToINotifyPropertyChanged(ViewModel);
-            //ViewModel.PropertyChanged += (object sender, PropertyChangedEventArgs args) =>
-            //{
-                /*DependencyObject property = FindName(args.PropertyName + "Value") as DependencyObject;
-                if (property != null)
-                {
-                    BindingOperations.GetBindingExpression(property, ContentProperty).UpdateTarget();
-                }*/
-            //};
-            //ViewModel.UpdatePropertiesEvent += () =>
-            //{
-                //BindingOperations.GetBindingExpression(AileronValue, ContentProperty).UpdateTarget();
-                //BindingOperations.GetBindingExpression(ElevatorValue, ContentProperty).UpdateTarget();
-            //};
         }
 
     }

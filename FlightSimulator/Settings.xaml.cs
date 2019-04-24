@@ -15,6 +15,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+/// <summary>
+/// The FlightSimulator Namespace.
+/// </summary>
 namespace FlightSimulator
 {
     /// <summary>
@@ -22,7 +25,14 @@ namespace FlightSimulator
     /// </summary>
     public partial class Settings : Window
     {
+        /// <summary>
+        /// The ViewModel SettingsWindowViewModel Property of the Setting Window's View Model.
+        /// </summary>
         public SettingsWindowViewModel ViewModel { get; set; }
+
+        /// <summary>
+        /// The Settings Constructor.
+        /// </summary>
         public Settings()
         {
             InitializeComponent();

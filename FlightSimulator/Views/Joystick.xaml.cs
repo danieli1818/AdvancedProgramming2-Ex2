@@ -15,6 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+/// <summary>
+/// The FlightSimulator.Views Namespace of the Views.
+/// </summary>
 namespace FlightSimulator.Views
 {
     /// <summary>
@@ -104,11 +107,26 @@ namespace FlightSimulator.Views
         /// <summary>This event fires once the joystick is captured</summary>
         public event EmptyJoystickEventHandler Captured;
 
+        /// <summary>
+        /// The _startPos Point member of the start position of the knob.
+        /// </summary>
         private Point _startPos;
+        /// <summary>
+        /// The Double _prevAileron and _prevElevator members of the previous Aileron and Elevator.
+        /// </summary>
         private double _prevAileron, _prevElevator;
+        /// <summary>
+        /// The Double canvasWidth and canvasHeight members of the width and height of the Joystick.
+        /// </summary>
         private double canvasWidth, canvasHeight;
+        /// <summary>
+        /// The Storyboard centerKnob.
+        /// </summary>
         private readonly Storyboard centerKnob;
 
+        /// <summary>
+        /// The Joystick Constructor.
+        /// </summary>
         public Joystick()
         {
             InitializeComponent();
@@ -120,6 +138,13 @@ namespace FlightSimulator.Views
             centerKnob = Knob.Resources["CenterKnob"] as Storyboard;
         }
 
+        /// <summary>
+        /// The Knob_MouseLeftButtonDown function gets as parameters
+        /// an object sender and MouseButtonEventArgs e and handles
+        /// left mouse button down on the knob.
+        /// <param name="sender">object sender of the left mouse click on the knob.</para>
+        /// <param name="e">MouseButtonEventArgs e of the Event Information.</param>
+        /// </summary>
         private void Knob_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _startPos = e.GetPosition(Base);
@@ -132,6 +157,13 @@ namespace FlightSimulator.Views
             centerKnob.Stop();
         }
 
+        /// <summary>
+        /// The Knob_MouseMove function gets as parameters
+        /// an object sender and MouseEventArgs e and handles
+        /// mouse move Event above the Knob.
+        /// <param name="sender">object sender of the Event.</para>
+        /// <param name="e">MouseEventArgs e of the Information of the Event.</param>
+        /// </summary>
         private void Knob_MouseMove(object sender, MouseEventArgs e)
         {
 
@@ -163,12 +195,26 @@ namespace FlightSimulator.Views
 
         }
 
+        /// <summary>
+        /// The Knob_MouseLeftButtonUp function gets as parameters
+        /// an object sender and a MouseButtonEventArgs e and handles
+        /// mouse button left up Event.
+        /// <param name="sender">object sender which sent The Event.</para>
+        /// <param name="e">MouseButtonEventArgs e of the Information of the Event.</param>
+        /// </summary>
         private void Knob_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Knob.ReleaseMouseCapture();
             centerKnob.Begin();
         }
 
+        /// <summary>
+        /// The centerKnob_Completed function gets as parameters
+        /// an object sender and EventArgs e and handles the finish
+        /// of the centering of the knob.
+        /// <param name="sender">object sender of the Event.</para>
+        /// <param name="e">EventArgs e of the Information of the Event.</param>
+        /// </summary>
         private void centerKnob_Completed(object sender, EventArgs e)
         {
             Aileron = Elevator = _prevAileron = _prevElevator = 0;
@@ -176,12 +222,28 @@ namespace FlightSimulator.Views
             Released?.Invoke(this);
         }
 
+        /// <summary>
+        /// The KnobMouseMoveCaptured delegate with Point startPoint of the knob,
+        /// Point newPoint of the knob, double canvasWidth of the knob and double canvasHeight of the knob
+        /// as parameters and return type of void.
+        /// </summary>
         public delegate void KnobMouseMoveCaptured(Point startPoint, Point newPoint, double canvasWidth, double canvasHeight);
 
+        /// <summary>
+        /// The KnobMouseReset delegate of reseting the position of the knob.
+        /// </summary>
         public delegate void KnobMouseReset();
 
+        /// <summary>
+        /// The KnobMouseMoveCapturedEvent KnobMouseMoveCaptured Event
+        /// of moving the knob with the mouse.
+        /// </summary>
         public event KnobMouseMoveCaptured KnobMouseMoveCapturedEvent;
 
+        /// <summary>
+        /// The KnobMouseResetEvent KnobMouseReset Event
+        /// of reseting the knob position.
+        /// </summary>
         public event KnobMouseReset KnobMouseResetEvent;
 
     }

@@ -20,7 +20,7 @@ namespace FlightSimulator.ViewModels.Windows
 {
     /// <summary>
     /// The MainWindowViewModel Class is The View Model Class of the Main Window.
-    /// It implements BaseNotify.
+    /// It extends BaseNotify.
     /// </summary>
     public class MainWindowViewModel : BaseNotify
     {
@@ -292,21 +292,38 @@ namespace FlightSimulator.ViewModels.Windows
 
         #region Commands
         #region ConnectCommand
+        /// <summary>
+        /// The _connectCommand ICommand member of the connect command.
+        /// </summary>
         private ICommand _connectCommand;
+
+        /// <summary>
+        /// The ConnectCommand ICommand Property of the connect command.
+        /// </summary>
         public ICommand ConnectCommand
         {
             get
             {
-                return _connectCommand ?? (_connectCommand = new CommandHandler(() => OnClick()));
+                return _connectCommand ?? (_connectCommand = new CommandHandler(() => OnConnectClick()));
             }
         }
-        private void OnClick()
+
+        /// <summary>
+        /// The OnConnectClick function of handling Connect Button Click.
+        /// </summary>
+        private void OnConnectClick()
         {
             model.Connect();
         }
         #endregion
         #region StopCommand
+        /// <summary>
+        /// The _stopCommand ICommand member of the stop command.
+        /// </summary>
         private ICommand _stopCommand;
+        /// <summary>
+        /// The StopCommand ICommand Property of the stop command.
+        /// </summary>
         public ICommand StopCommand
         {
             get
@@ -314,27 +331,22 @@ namespace FlightSimulator.ViewModels.Windows
                 return _stopCommand ?? (_stopCommand = new CommandHandler(() => OnStop()));
             }
         }
+        /// <summary>
+        /// The OnStop function of the stop command action.
+        /// </summary>
         private void OnStop()
         {
             model.Stop();
         }
         #endregion
-        #region SendCommand
-        private ICommand _sendCommand;
-        public ICommand SendCommand
-        {
-            get
-            {
-                return _sendCommand ?? (_sendCommand = new CommandHandlerWithParameter<string>((string param) => OnSend(param)));
-            }
-        }
-        private void OnSend(string param)
-        {
-            model.SendCommand(param);
-        }
-        #endregion
         #region ClickSettingsButtonCommand
+        /// <summary>
+        /// The _clickSettingsButtonCommand ICommand member of the click settings button command.
+        /// </summary>
         private ICommand _clickSettingsButtonCommand;
+        /// <summary>
+        /// The ClickSettingsButtonCommand ICommand Property of the click settings button command.
+        /// </summary>
         public ICommand ClickSettingsButtonCommand
         {
             get
@@ -342,7 +354,13 @@ namespace FlightSimulator.ViewModels.Windows
                 return _clickSettingsButtonCommand ?? (_clickSettingsButtonCommand = new CommandHandler(() => OnClickSettingsButton()));
             }
         }
+        /// <summary>
+        /// The _settingsWindow Settings window of the settings.
+        /// </summary>
         private Settings _settingsWindow;
+        /// <summary>
+        /// The OnClickSettingsButton function of handling the settings button click.
+        /// </summary>
         private void OnClickSettingsButton()
         {
             if (_settingsWindow == null || !_settingsWindow.IsLoaded)
@@ -353,7 +371,13 @@ namespace FlightSimulator.ViewModels.Windows
         }
         #endregion
         #region OkButtonClickCommand
+        /// <summary>
+        /// The _okButtonClickCommand ICommand member of the command of clicking the ok button.
+        /// </summary>
         private ICommand _okButtonClickCommand;
+        /// <summary>
+        /// The OkButtonClickCommand ICommand Property of the command of clicking the ok button.
+        /// </summary>
         public ICommand OkButtonClickCommand
         {
             get
@@ -361,6 +385,9 @@ namespace FlightSimulator.ViewModels.Windows
                 return _okButtonClickCommand ?? (_okButtonClickCommand = new CommandHandlerWithParameter<string>((String command) => OnOkButtonClick(command)));
             }
         }
+        /// <summary>
+        /// The OnOkButtonClick function of handling the clicking on the ok button.
+        /// </summary>
         private void OnOkButtonClick(String command)
         {
             if (sendCommand(command) == 0)
@@ -370,7 +397,13 @@ namespace FlightSimulator.ViewModels.Windows
         }
         #endregion
         #region ClearButtonClickCommand
+        /// <summary>
+        /// The _clearButtonClickCommand ICommand member of the command of clicking the clear button.
+        /// </summary>
         private ICommand _clearButtonClickCommand;
+        /// <summary>
+        /// The ClearButtonClickCommand ICommand Property of the command of clicking the clear button.
+        /// </summary>
         public ICommand ClearButtonClickCommand
         {
             get
@@ -378,6 +411,9 @@ namespace FlightSimulator.ViewModels.Windows
                 return _clearButtonClickCommand ?? (_clearButtonClickCommand = new CommandHandler(() => OnClearButtonClick()));
             }
         }
+        /// <summary>
+        /// The OnClearButtonClick function of handling the clicking on the clear button.
+        /// </summary>
         private void OnClearButtonClick()
         {
             AutoPilotText = "";

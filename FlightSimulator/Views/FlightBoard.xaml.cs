@@ -19,19 +19,37 @@ using FlightSimulator.ViewModels.Windows;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 
+/// <summary>
+/// The FlightSimulator.Views Namespace of all the Views.
+/// </summary>
 namespace FlightSimulator.Views
 {
     /// <summary>
-    /// Interaction logic for MazeBoard.xaml
+    /// The FlightBoard class is a UserControl of the flight board view.
     /// </summary>
     public partial class FlightBoard : UserControl
     {
+        /// <summary>
+        /// The planeLocations ObservableDataSource of Points
+        /// holds all the points in the flight board view.
+        /// </summary>
         ObservableDataSource<Point> planeLocations = null;
+        /// <summary>
+        /// The FlightBoard Constructor.
+        /// </summary>
         public FlightBoard()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// The UserControl_Loaded function gets as parameters
+        /// an object sender and a RoutedEventArgs
+        /// and finish the load of the flight board.
+        /// <param name="sender">object sender of the sender of the call to this function.</para>
+        /// <param name="e">RoutedEventArgs e arguments about the event which caused
+        /// the call to this function.</param>
+        /// </summary>
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             planeLocations = new ObservableDataSource<Point>();
@@ -40,8 +58,17 @@ namespace FlightSimulator.Views
 
             plotter.AddLineGraph(planeLocations, 2, "Route");
         }
-        
-        public void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e)
+
+        /// <summary>
+        /// The Vm_PropertyChanged function gets as parameters
+        /// an object sender and PropertyChangedEventArgs e
+        /// and handles the property changed event.
+        /// <param name="sender">object sender of the event which caused
+        /// the call of this function.</para>
+        /// <param name="e">PropertyChangedEventArgs e of the information
+        /// on the property which changed.</param>
+        /// </summary>
+        private void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon")) 
             {
@@ -56,6 +83,11 @@ namespace FlightSimulator.Views
             }
         }
 
+        /// <summary>
+        /// The addPropertyChangedFunctionToINotifyPropertyChanged function gets as a parameter
+        /// an INotifyPropertyChanged npc and adds to its PropertyChanged Event the Vm_PropertyChanged function.
+        /// <param name="npc">INotifyPropertyChanged npc to add the Vm_PropertyChanged Function To.</para>
+        /// </summary>
         public void addPropertyChangedFunctionToINotifyPropertyChanged(INotifyPropertyChanged npc)
         {
             npc.PropertyChanged += Vm_PropertyChanged;
