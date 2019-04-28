@@ -1,3 +1,9 @@
+commit 59428f18a36d4f2d0fc6cef9f3ddea070954f1c7
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 28 11:00:18 2019 +0300
+
+    final update comments
+
 commit 28dae82be45f3c6ee75f2c777cd25d6215a8af4c
 Author: Daniel Rottner <danieli205025@gmail.com>
 Date:   Sun Apr 28 10:23:11 2019 +0300

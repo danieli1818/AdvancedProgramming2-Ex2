@@ -417,7 +417,7 @@ namespace FlightSimulator.ViewModels.Windows
             if (_settingsWindow == null || !_settingsWindow.IsLoaded)
             {
                 _settingsWindow = new Settings();
-                _settingsWindow.Show();
+                _settingsWindow.ShowDialog();
             }
         }
         #endregion
