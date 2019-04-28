@@ -41,10 +41,7 @@ namespace FlightSimulator
         public MainWindow()
         {
             InitializeComponent();
-            ViewModel = new MainWindowViewModel(ApplicationMainModel.Instance);
-            FlightBoard.addPropertyChangedFunctionToINotifyPropertyChanged(ViewModel);
-            Joystick.KnobMouseMoveCapturedEvent += ViewModel.handleKnobMove;
-            Joystick.KnobMouseResetEvent += ViewModel.handleKnobReset;
+            ViewModel = new MainWindowViewModel(ApplicationMainModel.Instance, FlightBoard, Joystick);
             this.DataContext = ViewModel;
         }
 

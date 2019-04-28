@@ -303,7 +303,6 @@ namespace FlightSimulator.Model
             {
                 ShouldInfoServerRun = false;
                 InfoServerTCPListener.Stop();
-                //System.Threading.Thread.Sleep(5000);
                 if (InfoServerThread.IsAlive)
                 {
                     InfoServerThread.Abort();
@@ -366,6 +365,11 @@ namespace FlightSimulator.Model
             ValueXKnob = deltaPos.X;
             ValueYKnob = -deltaPos.Y;
             
+        }
+
+        ~ApplicationMainModel()
+        {
+            Stop();
         }
     }
 }

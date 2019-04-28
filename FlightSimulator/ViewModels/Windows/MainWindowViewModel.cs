@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,14 +39,20 @@ namespace FlightSimulator.ViewModels.Windows
         /// The MainWindowViewModel constructor gets as a parameter
         /// an IMainModel model of the Main Window.
         /// <param name="model">IMainModel model of the Main Window.</para>
+        /// <param name="fb">FlightBoard fb which we change when Lan or Lat changes.</param>
+        /// <param name="j">Joystick j to which we handle moving the knob.</param>
         /// </summary>
-        public MainWindowViewModel(IMainModel model)
+        public MainWindowViewModel(IMainModel model, FlightBoard fb, Joystick j)
         {
             this.model = model;
             model.PropertyChanged += handlePropertyChanged;
             Aileron = 0;
             Lat = 0;
-            m_autoPilotText = "";
+            AutoPilotText = "";
+            AutoPilotTextBoxBackgroundColor = "White";
+            fb.addPropertyChangedFunctionToINotifyPropertyChanged(this);
+            j.KnobMouseMoveCapturedEvent += handleKnobMove;
+            j.KnobMouseResetEvent += handleKnobReset;
         }
 
         /// <summary>
@@ -225,35 +232,37 @@ namespace FlightSimulator.ViewModels.Windows
                     NotifyPropertyChanged("AutoPilotText");
                     if (m_autoPilotText != "")
                     {
-                        AutoPilotTextBoxColor = Brushes.LightPink;
+                        AutoPilotTextBoxBackgroundColor = "LightPink";
                     } else
                     {
-                        AutoPilotTextBoxColor = Brushes.White;
+                        AutoPilotTextBoxBackgroundColor = "White";
                     }
                 }
             }
         }
 
         /// <summary>
-        /// The m_autoPilotTextBoxColor Brush member of the Background Color of the Auto Pilot TextBox.
+        /// The m_autoPilotTextBoxBackgroundColor member
+        /// of the string background color of the auto pilot text box.
         /// </summary>
-        private Brush m_autoPilotTextBoxColor;
+        private string m_autoPilotTextBoxBackgroundColor;
 
         /// <summary>
-        /// The AutoPilotTextBoxColor Brush Property of the Background Color of the Auto Pilot TextBox.
+        /// The AutoPilotTextBoxBackgroundColor Property
+        /// of the String background color of the auto pilot text box.
         /// </summary>
-        public Brush AutoPilotTextBoxColor
+        public String AutoPilotTextBoxBackgroundColor
         {
             get
             {
-                return m_autoPilotTextBoxColor;
+                return m_autoPilotTextBoxBackgroundColor;
             }
             private set
             {
-                if (m_autoPilotTextBoxColor == null || !m_autoPilotTextBoxColor.Equals(value))
+                if (AutoPilotTextBoxBackgroundColor == null || (value != null && !m_autoPilotTextBoxBackgroundColor.Equals(value)))
                 {
-                    m_autoPilotTextBoxColor = value;
-                    NotifyPropertyChanged("AutoPilotTextBoxColor");
+                    m_autoPilotTextBoxBackgroundColor = value;
+                    NotifyPropertyChanged("AutoPilotTextBoxBackgroundColor");
                 }
             }
         }
@@ -424,18 +433,63 @@ namespace FlightSimulator.ViewModels.Windows
         {
             get
             {
-                return _okButtonClickCommand ?? (_okButtonClickCommand = new CommandHandlerWithParameter<string>((String command) => OnOkButtonClick(command)));
+                return _okButtonClickCommand ?? (_okButtonClickCommand = new CommandHandler(() => OnOkButtonClick()));
             }
         }
+
+        /// <summary>
+        /// The sendingCommandsThread Thread of sending the commands in The Auto Pilot Text Box.
+        /// </summary>
+        private Thread sendingCommandsThread;
+
         /// <summary>
         /// The OnOkButtonClick function of handling the clicking on the ok button.
         /// </summary>
-        private void OnOkButtonClick(String command)
+        private void OnOkButtonClick()
         {
-            if (sendCommand(command) == 0)
+            String command = AutoPilotText;
+            if (sendingCommandsThread != null && sendingCommandsThread.IsAlive)
             {
-                AutoPilotTextBoxColor = Brushes.White;
+                sendingCommandsThread.Abort();
             }
+            sendingCommandsThread = new Thread(new ParameterizedThreadStart(sendCommandsOneAfterAnother));
+            sendingCommandsThread.Start(command.Split("\r\n".ToArray<char>()));
+        }
+
+        /// <summary>
+        /// The sendCommandsOneAfterAnother function
+        /// which gets as a parameter an object commands
+        /// which is string[] of commands to send to the flight simulator
+        /// and sends each one one after another with 2 seconds cooldown
+        /// between each one.
+        /// </summary>
+        /// <param name="commands">object commands which is string[] commands
+        /// of commands to send to the flight simulator.</param>
+        private void sendCommandsOneAfterAnother(object commands)
+        {
+            if (commands == null)
+            {
+                return;
+            }
+            string[] commandsArray = commands as string[];
+            if (commandsArray == null)
+            {
+                throw new Exception("Not Valid Parameter!!!!");
+            }
+            int i = 0;
+            foreach (string command in commandsArray)
+            {
+                if (sendCommand(command) == -1)
+                {
+                    return;
+                }
+                if (i != commandsArray.Length - 1)
+                {
+                    Thread.Sleep(2000);
+                    i++;
+                }
+            }
+            AutoPilotTextBoxBackgroundColor = "White";
         }
         #endregion
         #region ClearButtonClickCommand

@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Utils\DataXMLReader.cs" />
     <Compile Include="ViewModels\BaseNotify.cs" />
+    <Compile Include="Converters\StringToBrushConverter.cs" />
     <Compile Include="ViewModels\Windows\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Windows\SettingsWindowViewModel.cs" />
     <Compile Include="Views\FlightBoard.xaml.cs">

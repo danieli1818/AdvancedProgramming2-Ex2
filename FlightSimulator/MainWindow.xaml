@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightSimulator"
         xmlns:views="clr-namespace:FlightSimulator.Views"
+        xmlns:converters="clr-namespace:FlightSimulator.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="527.238" Width="878.918">
+    <Window.Resources>
+        <converters:StringToBrushConverter x:Key="Converter"/>
+    </Window.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.RowDefinitions>
@@ -98,9 +102,9 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.ColumnSpan="2" Name="AutoPilotTextBox" AcceptsReturn="True" Text="{Binding AutoPilotText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="{Binding AutoPilotTextBoxColor}">
+                        <TextBox Grid.ColumnSpan="2" Name="AutoPilotTextBox" AcceptsReturn="True" Text="{Binding AutoPilotText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="{Binding AutoPilotTextBoxBackgroundColor, Converter={StaticResource Converter}}">
                         </TextBox>
-                        <Button Grid.Row="1" Name="OKButton" HorizontalAlignment="Right" Margin="4" Command="{Binding OkButtonClickCommand}" CommandParameter="{Binding ElementName=AutoPilotTextBox, Path=Text}">
+                        <Button Grid.Row="1" Name="OKButton" HorizontalAlignment="Right" Margin="4" Command="{Binding OkButtonClickCommand}">
                             OK
                         </Button>
                         <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="4" Command="{Binding ClearButtonClickCommand}">
