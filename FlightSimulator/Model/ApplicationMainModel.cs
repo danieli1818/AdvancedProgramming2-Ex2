@@ -156,13 +156,17 @@ namespace FlightSimulator.Model
         /// The Connect function
         /// starts the Info Server and connects the Client
         /// </summary>
-        public void Connect()
+        public void ConnectServer(EventHandler serverConnected)
         {
             Stop();
             ShouldInfoServerRun = true;
-            InfoServerThread = new Thread(ConnectAndStartServer);
+            InfoServerThread = new Thread(new ParameterizedThreadStart(ConnectAndStartServer));
             InfoServerThread.IsBackground = true;
-            InfoServerThread.Start();
+            InfoServerThread.Start(serverConnected);
+        }
+
+        public void ConnectClientToSimulator()
+        {
             ShouldClientConnect = true;
             ClientConnectionThread = new Thread(ConnectClient);
             ClientConnectionThread.IsBackground = true;
@@ -172,8 +176,9 @@ namespace FlightSimulator.Model
         /// <summary>
         /// The ConnectAndStartServer function starts the Info Server.
         /// </summary>
-        private void ConnectAndStartServer()
+        private void ConnectAndStartServer(object serverConnected)
         {
+            EventHandler serverConnectedEvent = serverConnected as EventHandler;
             InfoServerTCPListener = new TcpListener(IPAddress.Any, SettingsModel.FlightInfoPort);
             // we set our IP address as server's address, and we also set the port
 
@@ -197,7 +202,9 @@ namespace FlightSimulator.Model
                         throw e;
                     }
                 }
-                
+
+                serverConnectedEvent?.Invoke(this, null);
+
 
                 NetworkStream ns = client.GetStream(); //networkstream is used to send/receive messages
 

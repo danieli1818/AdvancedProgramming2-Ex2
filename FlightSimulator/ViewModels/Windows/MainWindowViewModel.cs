@@ -46,6 +46,7 @@ namespace FlightSimulator.ViewModels.Windows
         {
             this.model = model;
             model.PropertyChanged += handlePropertyChanged;
+            onServerConnected += connectClientEventHandler;
             Aileron = 0;
             Lat = 0;
             AutoPilotText = "";
@@ -332,12 +333,22 @@ namespace FlightSimulator.ViewModels.Windows
                 double newValue = Math.Floor(value * 100) / 100;
                 if (newValue != m_rudder)
                 {
-                    if (sendCommand("set /controls/flight/rudder " + Rudder) == 0)
+                    if (sendCommand("set /controls/flight/rudder " + newValue) == 0)
                     {
                         m_rudder = newValue;
                         NotifyPropertyChanged("Rudder");
                     }
                 }
+            }
+        }
+
+        private event EventHandler onServerConnected;
+
+        private void connectClientEventHandler(object sender, EventArgs args)
+        {
+            if (sender as IMainModel == model)
+            {
+                model.ConnectClientToSimulator();
             }
         }
 
@@ -364,7 +375,7 @@ namespace FlightSimulator.ViewModels.Windows
         /// </summary>
         private void OnConnectClick()
         {
-            model.Connect();
+            model.ConnectServer(onServerConnected);
         }
         #endregion
         #region StopCommand

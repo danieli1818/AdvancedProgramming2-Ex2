@@ -66,9 +66,15 @@ namespace FlightSimulator.Model.Interface
 
         /// <summary>
         /// Connect function doesn't get parameters
-        /// and starts the server and starts and connects the client to the Simulator.
+        /// and starts the server and connects it to the Simulator.
         /// </summary>
-        void Connect();
+        void ConnectServer(EventHandler serverConnected);
+
+        /// <summary>
+        /// ConnectClient function doesn't get parameters
+        /// and connects the client to the Simulator.
+        /// </summary>
+        void ConnectClientToSimulator();
 
         /// <summary>
         /// The SendCommand function gets as a parameter
