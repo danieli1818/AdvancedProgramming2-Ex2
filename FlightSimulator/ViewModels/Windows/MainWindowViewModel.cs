@@ -342,8 +342,16 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
+        /// <summary>
+        /// The EventHandler Event Of Server Connected Means Finished Connecting To The Client.
+        /// </summary>
         private event EventHandler onServerConnected;
 
+        /// <summary>
+        /// connectClientEventHandler function is an EventHandler which connects the client.
+        /// </summary>
+        /// <param name="sender">object sender of who sent the Event.</param>
+        /// <param name="args">EventArgs args arguments of the Event.</param>
         private void connectClientEventHandler(object sender, EventArgs args)
         {
             if (sender as IMainModel == model)

@@ -165,6 +165,9 @@ namespace FlightSimulator.Model
             InfoServerThread.Start(serverConnected);
         }
 
+        /// <summary>
+        /// ConnectClientToSimulator Function which connects the client to the simulator.
+        /// </summary>
         public void ConnectClientToSimulator()
         {
             ShouldClientConnect = true;
