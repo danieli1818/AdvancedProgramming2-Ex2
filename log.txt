@@ -1,0 +1,125 @@
+commit 28dae82be45f3c6ee75f2c777cd25d6215a8af4c
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 28 10:23:11 2019 +0300
+
+    final update fix closing sockets
+
+commit e01039e2657504d4651caa6b9333513fa996769a
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Wed Apr 24 15:48:04 2019 +0300
+
+    update 13 Notifying Better
+
+commit 0c38e86908d1505d1fdc6b5724da0c86db743281
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Wed Apr 24 15:19:55 2019 +0300
+
+    update 12 normalizing Joystick
+
+commit 8ae29863d49841208197dec6f590da819dd53682
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Wed Apr 24 14:30:50 2019 +0300
+
+    update 11 finish comments
+
+commit 88a90b49e89087c40c3c865657af58a608c23eb1
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Tue Apr 23 14:12:49 2019 +0300
+
+    update 10 comments
+
+commit 1543aee3e52e1c2409d22cf1918498cf1a4f09ab
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 14 18:09:57 2019 +0300
+
+    update 9
+
+commit 6afe72792b8122661f9a00cb3009505bac07aee1
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 14 18:09:18 2019 +0300
+
+    update 9
+
+commit 53e2b60b6d2d6d508fd747e9a67f2eddf59f1d35
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 14 18:08:41 2019 +0300
+
+    update 9
+
+commit 7ecd49850b21f128c3d65d2173930c53f7952654
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 14 18:07:04 2019 +0300
+
+    update 9
+
+commit a7e249669cd2ebd61c5e8276b0db27b3f173a4ee
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 14 15:32:19 2019 +0300
+
+    update 8
+
+commit ac67f8c51af2539cfdd9a35eba9dc68b9df671a5
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 14 15:31:32 2019 +0300
+
+    update 8
+
+commit b340861af49f13caa5bddf996d27509d67c0d6bc
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 14 15:30:53 2019 +0300
+
+    update 8
+
+commit 5441c20a1fecc64016ec4078056893803b18415e
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sun Apr 14 15:30:01 2019 +0300
+
+    update 8
+
+commit 951a6ba8f071d8a2591a86cff42a263370276bf0
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Thu Apr 11 17:01:23 2019 +0300
+
+    update 7 flightboard
+
+commit 3ca4dcc9b8149de93fe823ce81288488bb9b60df
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Thu Apr 11 11:11:23 2019 +0300
+
+    update 6 MainWindowViewModel
+
+commit 87ec2868deeb87f1747e6fdb156a996724eaae3d
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Mon Apr 8 20:13:00 2019 +0300
+
+    update 5 server and client
+
+commit d019c1cf5ca8eb7c5585ed7d9ddeb8f3c997d2e4
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Mon Apr 8 17:41:36 2019 +0300
+
+    update 4 Command Buttons
+
+commit 3c52dee6b4304a057b7d7cb103fc616e7b228752
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Mon Apr 8 17:39:40 2019 +0300
+
+    update 3 Button Command
+
+commit e7a1470d49fc7edffe1863d0f33f121f15b02d54
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sat Apr 6 14:16:33 2019 +0300
+
+    update2
+
+commit 4bd2f6faa5ec76cd62585ffbcda75d942e82c90a
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sat Apr 6 10:22:31 2019 +0300
+
+    update1
+
+commit f2926cdd7271f9956772e87184a19150932d40cc
+Author: Daniel Rottner <danieli205025@gmail.com>
+Date:   Sat Apr 6 10:18:26 2019 +0300
+
+    update1

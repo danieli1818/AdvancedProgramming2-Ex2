@@ -367,6 +367,9 @@ namespace FlightSimulator.Model
             
         }
 
+        /// <summary>
+        /// The Finalizer to close the connections.
+        /// </summary>
         ~ApplicationMainModel()
         {
             Stop();
